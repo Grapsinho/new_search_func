@@ -38,10 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    "inventory.apps.InventoryConfig",
+
     #api
     "api.apps.ApiConfig",
     "rest_framework",
     'corsheaders',
+
+    #models
+    "mptt",
 
     #Development
     # "debug_toolbar",
@@ -94,6 +99,16 @@ CORS_ALLOW_ALL_ORIGINS = True
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379/1',  # Adjust this URL as needed
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
 
 DATABASES = {
     "default": {

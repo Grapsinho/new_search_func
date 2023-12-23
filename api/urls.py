@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
-from .views import bookApi, BookDetailAPIView
+from .views import ProductDetailAPIView
 
 urlpatterns = [
-    path('books/all', bookApi.as_view()),
-    path('books/<str:search>', BookDetailAPIView.as_view()),
+    # path('books/all', bookApi.as_view()),
+    path('products/<str:search>', ProductDetailAPIView.as_view()),
 ]
