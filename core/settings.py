@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "mptt",
 
     #Development
-    # "debug_toolbar",
+    "debug_toolbar",
 
     #search
     'django.contrib.postgres',
@@ -63,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 
     #api
     'corsheaders.middleware.CorsMiddleware',
@@ -112,11 +114,11 @@ CACHES = {
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "test_db_for_largedatadatabase",
         "USER": "postgres",
         "PASSWORD": "giorgi123",
-        "HOST": "localhost",
+        "HOST": "127.0.0.1",
         "PORT": "5432",
     }
 }
@@ -162,3 +164,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+INTERNAL_IPS = [
+    "localhost", "127.0.0.1"
+]

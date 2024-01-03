@@ -4,7 +4,7 @@ from inventory.models import *
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ["name", "description"]
+        fields = ["id", "name", "description"]
 
 class mediaSerializer(serializers.ModelSerializer):
     class Meta:
