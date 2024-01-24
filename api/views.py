@@ -49,7 +49,7 @@ class ProductInventoryApi(generics.GenericAPIView, mixins.ListModelMixin, mixins
         return self.create(request, *args, **kwargs)
 
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, SearchHeadline
-from django.db.models import Q
+from django.db.models import Q, F
 from django.db.models.functions import Cast
 from django.db.models import FloatField
 from django.contrib.postgres.search import TrigramSimilarity, TrigramDistance
@@ -82,19 +82,20 @@ class ProductDetailAPIView(generics.ListAPIView):
         query = SearchQuery(search_query)
         rank = SearchRank(vector, search_query)
 
-        # Using TrigramSimilarity for searching in title and authors
-        trigram_similarity_title = TrigramSimilarity('product__name', search_query)
-        trigram_similarity_authors = TrigramSimilarity('product__description', search_query)
+        # # Using TrigramSimilarity for searching in title and authors
+        trigram_similarity_title = TrigramSimilarity("product__name", search_query)
+        trigram_similarity_authors = TrigramSimilarity("product__description", search_query)
 
-        prefetch_fro_media = Prefetch('media_product_inventory', queryset=Media.objects.all())
-        prefetch_fro_product = Prefetch('product', queryset=Product.objects.all())
-        #Performing the combined search
+        prefetch_for_media = Prefetch('media_product_inventory', queryset=Media.objects.all())
+        prefetch_for_product = Prefetch('product', queryset=Product.objects.all())
+        
+        # #Performing the combined search
         results = ProductInventory.objects.annotate(
             rank=rank,
             trigram_similarity_title=trigram_similarity_title,
             trigram_similarity_authors=trigram_similarity_authors,
         ).filter(
             title_q | author_q
-        ).prefetch_related(prefetch_fro_product, prefetch_fro_media).only("id", "retail_price", "product__name", "product__description", "media_product_inventory__image").order_by('-rank', '-trigram_similarity_title', '-trigram_similarity_authors')
+        ).prefetch_related(prefetch_for_product, prefetch_for_media).only("id", "retail_price", "product__name", "product__description", "media_product_inventory__image").order_by('-rank', '-trigram_similarity_title', '-trigram_similarity_authors')
 
         return results

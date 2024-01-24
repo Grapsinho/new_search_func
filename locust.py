@@ -6,5 +6,5 @@ class MyUser(HttpUser):
     @task
     def all_product(self):
         # Define the API endpoint and request
-        # search_term = "green sneakers"
-        self.client.get(f"/api/products/all")
+        search_term = "green sneakers"
+        self.client.get(f"/api/products/{search_term}")
